@@ -48,4 +48,18 @@ VALUES ( $1, $2, $3, $4, $5 )
 
         Ok(())
     }
+
+    async fn delete(&self, id: &str) -> Result<()> {
+        sqlx::query!(
+            r#"
+DELETE FROM tasks
+WHERE id = $1
+            "#,
+            id
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
+    }
 }

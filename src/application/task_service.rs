@@ -30,8 +30,16 @@ where
         })?;
         self.task_repository.insert(task).await
     }
+
+    pub async fn delete_task(&self, input: DeleteTaskInput) -> Result<()> {
+        self.task_repository.delete(&input.id).await
+    }
 }
 
 pub struct CreateTaskInput {
     pub description: String,
+}
+
+pub struct DeleteTaskInput {
+    pub id: String,
 }

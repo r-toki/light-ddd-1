@@ -12,5 +12,5 @@ pub trait TaskRepository {
 
     // async fn update(&self, task: Task) -> Result<()>;
 
-    // async fn delete(&self, id: &str) -> Result<()>;
+    async fn delete(&self, id: &str) -> Result<()>;
 }

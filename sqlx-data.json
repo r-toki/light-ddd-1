@@ -1,5 +1,17 @@
 {
   "db": "PostgreSQL",
+  "171142162c7c946bf5d978a033f4a2b7dc95f21bd41ebe6c4fa7e69f5e519228": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text"
+        ]
+      }
+    },
+    "query": "\nDELETE FROM tasks\nWHERE id = $1\n            "
+  },
   "23d175f1a59490058eec09d18b398e309b0b8100df27a92055b82fa290aedb36": {
     "describe": {
       "columns": [],

@@ -1,0 +1,61 @@
+{
+  "db": "PostgreSQL",
+  "23d175f1a59490058eec09d18b398e309b0b8100df27a92055b82fa290aedb36": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Bool",
+          "Timestamptz",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "\nINSERT INTO tasks ( id, description, completed, created_at, updated_at )\nVALUES ( $1, $2, $3, $4, $5 )\n            "
+  },
+  "242cd7f6f9d44fb11dcf2abd3b63f1307e24127e09164c21255a4390f28ce895": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Text"
+        },
+        {
+          "name": "description",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "completed",
+          "ordinal": 2,
+          "type_info": "Bool"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 3,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "updated_at",
+          "ordinal": 4,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "\nSELECT *\nFROM tasks\nORDER BY created_at\n            "
+  }
+}

@@ -14,25 +14,30 @@ pub struct Task {
     pub updated_at: DateTime<Utc>,
 }
 
+pub struct NewTask {
+    pub description: String,
+}
+
 impl Task {
-    fn new(description: &str) -> Result<Self> {
+    pub fn new(new_task: NewTask) -> Result<Self> {
+        let now = Utc::now();
         let task = Self {
             id: Ulid::new().to_string(),
-            description: description.to_string(),
+            description: new_task.description,
             completed: false,
-            created_at: Utc::now(),
-            updated_at: Utc::now(),
+            created_at: now.clone(),
+            updated_at: now.clone(),
         };
         task.validate()?;
         Ok(task)
     }
 
-    fn done(&mut self) {
+    pub fn done(&mut self) {
         self.completed = true;
         self.updated_at = Utc::now();
     }
 
-    fn undone(&mut self) {
+    pub fn undone(&mut self) {
         self.completed = false;
         self.updated_at = Utc::now();
     }

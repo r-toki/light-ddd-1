@@ -1,4 +1,7 @@
-use crate::domain::task::{task::Task, task_repository::TaskRepository};
+use crate::domain::task::{
+    task::{NewTask, Task},
+    task_repository::TaskRepository,
+};
 use anyhow::Result;
 
 #[derive(Clone)]
@@ -17,7 +20,18 @@ where
         Self { task_repository }
     }
 
-    pub async fn find_all(&self) -> Result<Vec<Task>> {
+    pub async fn get_all_tasks(&self) -> Result<Vec<Task>> {
         self.task_repository.find_all().await
     }
+
+    pub async fn create_task(&self, input: CreateTaskInput) -> Result<()> {
+        let task = Task::new(NewTask {
+            description: input.description.clone(),
+        })?;
+        self.task_repository.insert(task).await
+    }
+}
+
+pub struct CreateTaskInput {
+    pub description: String,
 }

@@ -32,12 +32,18 @@ impl Task {
         Ok(task)
     }
 
-    pub fn done(&mut self) {
+    pub fn do_complete(&mut self) {
+        if self.completed {
+            return;
+        }
         self.completed = true;
         self.updated_at = Utc::now();
     }
 
-    pub fn undone(&mut self) {
+    pub fn undo_complete(&mut self) {
+        if !self.completed {
+            return;
+        }
         self.completed = false;
         self.updated_at = Utc::now();
     }

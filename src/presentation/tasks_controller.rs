@@ -1,5 +1,7 @@
 use super::result::Result;
-use crate::application::task_service::{CreateTaskInput, DeleteTaskInput};
+use crate::application::task_service::{
+    CreateTaskInput, DeleteTaskInput, DoCompleteTaskInput, UndoCompleteTaskInput,
+};
 use crate::context::Context;
 use actix_web::{
     delete, get, post,
@@ -12,6 +14,8 @@ pub fn init(cfg: &mut ServiceConfig) {
     cfg.service(index);
     cfg.service(create);
     cfg.service(delete);
+    cfg.service(complete::create);
+    cfg.service(complete::delete);
 }
 
 #[get("/tasks")]
@@ -40,6 +44,32 @@ async fn delete(context: Data<Context>, path: Path<TaskPath>) -> Result<impl Res
         })
         .await?;
     Ok(Json(()))
+}
+
+mod complete {
+    use super::*;
+
+    #[post("/tasks/{task_id}/complete")]
+    async fn create(context: Data<Context>, path: Path<TaskPath>) -> Result<impl Responder> {
+        context
+            .task_service
+            .do_complete_task(DoCompleteTaskInput {
+                id: path.task_id.clone(),
+            })
+            .await?;
+        Ok(Json(()))
+    }
+
+    #[delete("/tasks/{task_id}/complete")]
+    async fn delete(context: Data<Context>, path: Path<TaskPath>) -> Result<impl Responder> {
+        context
+            .task_service
+            .undo_complete_task(UndoCompleteTaskInput {
+                id: path.task_id.clone(),
+            })
+            .await?;
+        Ok(Json(()))
+    }
 }
 
 #[derive(Deserialize)]

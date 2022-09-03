@@ -28,7 +28,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(Data::new(context.clone()))
-            .configure(presentation::task_controller::init)
+            .configure(presentation::tasks_controller::init)
     })
     .bind(format!("{}:{}", host, port))?
     .run()

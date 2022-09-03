@@ -31,6 +31,22 @@ ORDER BY created_at
         Ok(tasks)
     }
 
+    async fn find_one(&self, id: &str) -> Result<Task> {
+        let task = sqlx::query_as!(
+            Task,
+            r#"
+SELECT *
+FROM tasks
+WHERE id = $1
+            "#,
+            id
+        )
+        .fetch_one(&self.pool)
+        .await?;
+
+        Ok(task)
+    }
+
     async fn insert(&self, task: Task) -> Result<()> {
         sqlx::query!(
             r#"
@@ -42,6 +58,25 @@ VALUES ( $1, $2, $3, $4, $5 )
             task.completed,
             task.created_at,
             task.updated_at
+        )
+        .execute(&self.pool)
+        .await?;
+
+        Ok(())
+    }
+
+    async fn update(&self, task: Task) -> Result<()> {
+        sqlx::query!(
+            r#"
+UPDATE tasks
+SET description = $1, completed = $2, created_at = $3, updated_at = $4
+WHERE id = $5
+            "#,
+            task.description,
+            task.completed,
+            task.created_at,
+            task.updated_at,
+            task.id
         )
         .execute(&self.pool)
         .await?;

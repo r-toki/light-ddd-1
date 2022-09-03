@@ -34,6 +34,18 @@ where
     pub async fn delete_task(&self, input: DeleteTaskInput) -> Result<()> {
         self.task_repository.delete(&input.id).await
     }
+
+    pub async fn do_complete_task(&self, input: DoCompleteTaskInput) -> Result<()> {
+        let mut task = self.task_repository.find_one(&input.id).await?;
+        task.do_complete();
+        self.task_repository.update(task).await
+    }
+
+    pub async fn undo_complete_task(&self, input: UndoCompleteTaskInput) -> Result<()> {
+        let mut task = self.task_repository.find_one(&input.id).await?;
+        task.undo_complete();
+        self.task_repository.update(task).await
+    }
 }
 
 pub struct CreateTaskInput {
@@ -41,5 +53,13 @@ pub struct CreateTaskInput {
 }
 
 pub struct DeleteTaskInput {
+    pub id: String,
+}
+
+pub struct DoCompleteTaskInput {
+    pub id: String,
+}
+
+pub struct UndoCompleteTaskInput {
     pub id: String,
 }
